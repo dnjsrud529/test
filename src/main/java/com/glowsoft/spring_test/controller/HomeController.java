@@ -1,8 +1,6 @@
 package com.glowsoft.spring_test.controller;
 
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,30 +10,28 @@ import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.nio.file.Files;
 
 
 @Controller
 public class HomeController {
     private String cookie;
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/main.do", method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("data", "Hello, Spring from IntelliJ! :)");
-        return "index";
+        System.out.println("main in!");
+        return "main";
     }
 
     @RequestMapping(value = "/test")
     public ModelAndView test(){
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("main");
         mav.addObject("data","taesta");
         return mav;
     }
@@ -45,9 +41,9 @@ public class HomeController {
         return "redirect:http://naver.com";
     }
 
-    @RequestMapping(value = "code")
+    @RequestMapping(value = "/code.do")
     public ModelAndView ModelAndView(HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("main");
 //        Map<String,Object> map = new HashMap<String,Object>();
 //        map.put("username","admin");
 //        map.put("password","1234qwer!");
@@ -61,7 +57,7 @@ public class HomeController {
 //        }
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("username","admin");
+        params.add("username","test");
         params.add("password","1234qwer!");
         params.add("REQUEST_KIND","API");
 
@@ -77,9 +73,9 @@ public class HomeController {
         return mav;
     }
 
-    @RequestMapping("anal")
+    @RequestMapping("/anal.do")
     public ModelAndView anal(){
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("/index.jsp");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie",cookie);
@@ -116,7 +112,7 @@ public class HomeController {
 //
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
         params.add("projectname","test");
-        params.add("filelist","C:\\Users\\dnjsr\\pro_c\\cpdemo1\\cpdemo1.pc");
+        params.add("filelist","C:\\Users\\dnjsr\\pro_c\\cpdemo1\\cpdemo1.pc,C:\\Users\\dnjsr\\pro_c\\sample10\\sample10.pc");
         HttpEntity entity = new HttpEntity(params,headers);
 
         RestTemplate restTemplate = new RestTemplate();
